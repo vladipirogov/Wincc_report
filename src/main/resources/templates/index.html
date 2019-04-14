@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+
+<head>
+    <div th:insert="~{default :: head}"></div>
+    <link data-th-href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link data-th-href="@{/css/main.css}" rel="stylesheet">
+</head>
+
+<body class="w3-light-grey">
+
+<div th:insert="~{default :: top_container}"></div>
+<div th:insert="~{default :: menu}"></div>
+
+<div class="w3-main page-content container">
+    <div class="row">
+        <div id="title">
+            <h1>Main report</h1>
+        </div>
+
+        <table id="reports" class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%">Id</th>
+                <th width="5%">Date time</th>
+                <th width="5%">Number</th>
+                <th width="5%">Code</th>
+                <th width="5%">Name</th>
+                <th width="5%">Rub_5_10</th>
+                <th width="5%">Rub_10_20</th>
+                <th width="5%">Rub_20_40</th>
+                <th width="5%">Cellulose</th>
+                <th width="5%">Mineral</th>
+                <th width="5%">Dust</th>
+                <th width="5%">Bitum</th>
+                <th width="5%">Temperature</th>
+                <th width="5%">Mix time</th>
+                <th width="5%">Weight</th>
+                <th width="5%">All weight</th>
+                <th width="5%">Oper</th>
+                <th width="5%">Trigger</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="result" data-th-each="report : ${reports}">
+                <td>[[${report.id}]]</td>
+                <td>[[${report.dateTime}]]</td>
+                <td>[[${report.num}]]</td>
+                <td>[[${report.code}]]</td>
+                <td>[[${report.rName}]]</td>
+                <td>[[${report.rub05}]]</td>
+                <td>[[${report.rub510}]]</td>
+                <td>[[${report.rub1020}]]</td>
+                <td>[[${report.rub2040}]]</td>
+                <td>[[${report.cellulose}]]</td>
+                <td>[[${report.mineral}]]</td>
+                <td>[[${report.dust}]]</td>
+                <td>[[${report.bitum}]]</td>
+                <td>[[${report.temper}]]</td>
+                <td>[[${report.maxTime}]]</td>
+                <td>[[${report.weight}]]</td>
+                <td>[[${report.allWeight}]]</td>
+                <td>[[${report.oper}]]</td>
+                <td>[[${report.trig2}]]</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script data-th-src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
