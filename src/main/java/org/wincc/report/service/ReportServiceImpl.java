@@ -17,7 +17,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Flux<Report> findInInterval() {
-        return Flux.interval(Duration.ofSeconds(1))
+        return Flux.interval(Duration.ofSeconds(5))
                 .onBackpressureDrop()
                 .map(this::generateReports)
                 .flatMapIterable(x -> x);

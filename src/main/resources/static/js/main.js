@@ -13,7 +13,8 @@ function loadreports () {
             // These events are JSON, so parsing and DOM fiddling are needed
             var report = JSON.parse(event.data);
 
-            var row = reportTable.getElementsByTagName("tbody")[0].insertRow(0);
+            //$("#reports-body").empty();
+            var row = reportTable.getElementsByTagName("tbody")[0].insertRow(-1);
 
             Object.keys(report).forEach(function(key, index) {
                 var cell = row.insertCell(index);

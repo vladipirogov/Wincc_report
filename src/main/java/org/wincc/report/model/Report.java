@@ -7,8 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 @Entity
 @Table(name = "report")
 @Data
@@ -18,7 +18,7 @@ public class Report {
     private long id;
 
     @Column(name = "date_time")
-    private Timestamp dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "num")
     private int num;
@@ -71,4 +71,7 @@ public class Report {
     @Column(name = "trig_2")
     private int trig2;
 
+    public LocalDateTime getDateTime() {
+        return dateTime.truncatedTo(ChronoUnit.SECONDS);
+    }
 }

@@ -13,7 +13,7 @@
 <body class="w3-light-grey">
 
 <div th:insert="~{default :: top_container}"></div>
-<div th:insert="~{default :: menu}"></div>
+<div th:insert="~{default :: #mySidebar}"></div>
 
 <div class="w3-main page-content container">
     <div class="row">
@@ -21,7 +21,8 @@
             <h1>Main report</h1>
         </div>
 
-        <table id="reports" class="table table-striped">
+        <div class="report-table">
+        <table id="reports" class="table table-striped" style="overflow-x:auto;">
             <thead>
             <tr>
                 <th width="5%">Id</th>
@@ -44,7 +45,7 @@
                 <th width="5%">Trigger</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="reports-body">
             <tr class="result" data-th-each="report : ${reports}">
                 <td>[[${report.id}]]</td>
                 <td>[[${report.dateTime}]]</td>
@@ -68,6 +69,7 @@
             </tr>
             </tbody>
         </table>
+        </div>
     </div>
 
 </div>
