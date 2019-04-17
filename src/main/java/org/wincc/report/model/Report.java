@@ -8,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 @Entity
 @Table(name = "report")
 @Data
 @EqualsAndHashCode(of = "id")
 public class Report {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+
     @Id
     private long id;
 
@@ -71,7 +73,7 @@ public class Report {
     @Column(name = "trig_2")
     private int trig2;
 
-    public LocalDateTime getDateTime() {
-        return dateTime.truncatedTo(ChronoUnit.SECONDS);
+    public String getDateTime() {
+        return dateTime.format(formatter);
     }
 }
