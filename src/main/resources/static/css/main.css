@@ -13,7 +13,7 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 }
 
 .report-table {
-    overflow-x:inherit;
+    overflow-x:auto;
 }
 
 .report-table table {
@@ -22,6 +22,10 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     font-size: 12px;
     text-align:center;
     white-space: nowrap;
+}
+
+.report-table table th, td {
+    min-width: 20px;
 }
 
 .tittle {
