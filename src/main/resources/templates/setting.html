@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:insert="~{default :: head}"></div>
+</head>
+
+<body w3-light-grey>
+
+<div th:insert="~{default :: top_container}"></div>
+<div th:insert="~{default :: #mySidebar}"></div>
+
+<div class="w3-main page-content">
+    <div class="tittle">
+        <h1>Настройки</h1>
+    </div>
+
+</div>
+<script>
+    w3_select(document.getElementById('setting_href'))
+</script>
+</body>
+</html>

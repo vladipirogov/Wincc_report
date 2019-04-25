@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <div th:insert="~{default :: head}"></div>
+</head>
+
+<body w3-light-grey>
+
+<div th:insert="~{default :: top_container}"></div>
+<div th:insert="~{default :: #mySidebar}"></div>
+
+<div class="w3-main page-content">
+    <div class="tittle">
+        <h1>Отчеты</h1>
+    </div>
+
+</div>
+
+<div class="container">
+    <form action="#" th:action="@{/report/main}" th:object="${model}" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="report_select">Отчет:</label>
+            </div>
+            <div class="col-30">
+                <select id="report_select" th:field="*{report}">
+                    <option value="main_report">Отчет производства</option>
+                    <option value="second_report">Второй отчет</option>
+                    <option value="third_report">Третий отчет</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="batch_input">Партия:</label>
+            </div>
+            <div class="col-25">
+                <input type="text" id="batch_input" th:field="*{batchInput}" placeholder="Введите партию">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="date_input">Дата:</label>
+            </div>
+            <div class="col-25">
+                <input type="text" id="date_input" th:field="*{dateInput}" placeholder="Введите дату">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="check_format"> Другие форматы</label>
+            </div>
+            <div class="col-25" style="padding-top:13px">
+                <input type="checkbox" id="check_format" th:field="*{print}">
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+</div>
+
+<script>
+    w3_select(document.getElementById('reports_href'))
+</script>
+<script>
+    $( function() {
+        $( "#date_input" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            monthNames : ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+            dayNamesMin : ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+        });
+    } );
+</script>
+</body>
+</html>

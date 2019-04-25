@@ -6,8 +6,6 @@
 
 <head>
     <div th:insert="~{default :: head}"></div>
-    <link data-th-href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link data-th-href="@{/css/main.css}" rel="stylesheet">
 </head>
 
 <body class="w3-light-grey">
@@ -17,15 +15,14 @@
 
 <div class="w3-main page-content">
         <div class="tittle">
-            <h1>Основной отчет</h1>
+            <h1>Основной обзор</h1>
         </div>
 
         <div class="report-table">
-        <table id="reports" class="table-striped" style="overflow-x:auto;">
+        <table id="reports_table" class="table-striped" style="overflow-x:auto;">
             <thead>
             <tr>
-                <th width="5%">Id</th>
-                <th width="50%">Время</th>
+                <th width="5%">Время</th>
                 <th width="5%">Вып.</th>
                 <th width="5%">Рецепт</th>
                 <th width="5%">Обозначение</th>
@@ -41,12 +38,11 @@
                 <th width="5%">Вес, кг</th>
                 <th width="5%">Вес всего, кг</th>
                 <th width="5%">Оператор</th>
-                <th width="5%">Trigger</th>
             </tr>
             </thead>
             <tbody id="reports-body">
             <tr class="result" data-th-each="report : ${reports}">
-                <td>[[${report.id}]]</td>
+                <td style="display: none">[[${report.id}]]</td>
                 <td>[[${report.dateTime}]]</td>
                 <td>[[${report.num}]]</td>
                 <td>[[${report.code}]]</td>
@@ -60,11 +56,10 @@
                 <td>[[${report.dust}]]</td>
                 <td>[[${report.bitum}]]</td>
                 <td>[[${report.temper}]]</td>
-                <td>[[${report.maxTime}]]</td>
+                <td>[[${report.mixTime}]]</td>
                 <td>[[${report.weight}]]</td>
                 <td>[[${report.allWeight}]]</td>
                 <td>[[${report.oper}]]</td>
-                <td>[[${report.trig2}]]</td>
             </tr>
             </tbody>
         </table>
@@ -73,6 +68,9 @@
 </div>
 
 <script data-th-src="@{/js/main.js}"></script>
+<script>
+    w3_select(document.getElementById('index_href'))
+</script>
 
 </body>
 

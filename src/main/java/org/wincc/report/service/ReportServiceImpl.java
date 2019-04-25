@@ -1,13 +1,29 @@
 package org.wincc.report.service;
 
+import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.view.JasperViewer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.stereotype.Service;
 import org.wincc.report.model.Report;
 import org.wincc.report.repository.ReportRepository;
 import org.wincc.report.repository.SettingRepository;
 import reactor.core.publisher.Flux;
 
-import java.math.BigDecimal;
+import javax.persistence.EntityManager;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class ReportServiceImpl implements ReportService {
 
     @Autowired
@@ -22,6 +39,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private SettingRepository settingRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    private DataSource getDataSource() {
+        EntityManagerFactoryInfo info = (EntityManagerFactoryInfo) entityManager.getEntityManagerFactory();
+        return info.getDataSource();
+    }
 
     @Override
     public Flux<Report> findInInterval() {
@@ -45,5 +70,31 @@ public class ReportServiceImpl implements ReportService {
 
     private List<Report> generateReports(long interval) {
         return reportRepository.findAll();
+    }
+
+    @Override
+    public void generateReport(HttpServletResponse response,
+                               Map<String, Object> parameters,
+                               String report,
+                               boolean print) {
+        try(InputStream inputStream = this.getClass().getResourceAsStream("/static/report/main_report.jrxml");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ServletOutputStream servletOutputStream = response.getOutputStream()) {
+            JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, getDataSource().getConnection());
+            response.setContentType("application/pdf");
+            response.setCharacterEncoding("UTF-8");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
+            response.setContentLength(baos.size());
+            baos.writeTo(servletOutputStream);
+            if (print == true)
+                JasperViewer.viewReport(jasperPrint, false);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        } catch (JRException e) {
+            log.error(e.getMessage());
+        }
     }
 }
