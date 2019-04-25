@@ -28,6 +28,11 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     min-width: 20px;
 }
 
+.report-table table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #adb3ad;
+}
 .tittle {
     padding-left: 20px;
 }

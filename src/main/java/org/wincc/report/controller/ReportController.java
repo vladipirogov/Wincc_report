@@ -28,7 +28,7 @@ public class ReportController {
         return reportService.findInInterval();
     }
 
-    @GetMapping(path = "report/main")
+    @GetMapping(path = "/report/main")
     public void report(HttpServletResponse response) throws Exception {
         response.setContentType("text/html");
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(reportService.report());

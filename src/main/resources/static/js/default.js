@@ -25,3 +25,8 @@ function w3_close() {
     mySidebar.style.display = "none";
     overlayBg.style.display = "none";
 }
+
+function w3_select(element) {
+    element.classList.add('w3-blue');
+
+}

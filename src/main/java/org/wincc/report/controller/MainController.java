@@ -8,12 +8,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping("/")
-    public String index(final Model model) {
-        return "default";
+    public String index() {
+        return "index";
     }
 
-    @GetMapping("/overview")
-    public String overview() {
-        return "index";
+    @GetMapping(path = "/reports")
+    public String reports() {
+        return "reports";
+    }
+
+    @GetMapping(path = "/history")
+    public String history() {
+        return "history";
+    }
+
+    @GetMapping(path = "/setting")
+    public String setting() {
+        return "setting";
     }
 }
