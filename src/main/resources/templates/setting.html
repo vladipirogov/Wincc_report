@@ -17,7 +17,24 @@
         <h1>Настройки</h1>
     </div>
 
+    <div class="container" style="margin-left: 25px">
+        <div class="row">
+            <div class="col-25">
+                <label for="update_input">Интервал, сек:</label>
+            </div>
+            <div class="col-25">
+                <input type="text" id="update_input" name="update_input" placeholder="введите интервал" th:value="${setting.updateInterval}">
+            </div>
+            <div class="col-25">
+                <button id="cronstop_btn" onclick="updateInterval('update_input')" class="w3-btn">Обновить</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<div th:insert="~{default :: #snackbar}"></div>
+
 <script>
     w3_select(document.getElementById('setting_href'))
 </script>

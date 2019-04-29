@@ -23,9 +23,9 @@
             <thead>
             <tr>
                 <th width="5%">Время</th>
-                <th width="5%">Вып.</th>
-                <th width="5%">Рецепт</th>
                 <th width="5%">Обозначение</th>
+                <th width="5%">Рецепт</th>
+                <th width="5%">Щебень 0-5</th>
                 <th width="5%">Щебень 5-10</th>
                 <th width="5%">Щебень 10-20</th>
                 <th width="5%">Щебень 20-40</th>
@@ -42,9 +42,7 @@
             </thead>
             <tbody id="reports-body">
             <tr class="result" data-th-each="report : ${reports}">
-                <td style="display: none">[[${report.id}]]</td>
                 <td>[[${report.dateTime}]]</td>
-                <td>[[${report.num}]]</td>
                 <td>[[${report.code}]]</td>
                 <td>[[${report.rName}]]</td>
                 <td>[[${report.rub05}]]</td>
@@ -66,6 +64,8 @@
         </div>
 
 </div>
+
+<div th:insert="~{default :: #snackbar}"></div>
 
 <script data-th-src="@{/js/main.js}"></script>
 <script>

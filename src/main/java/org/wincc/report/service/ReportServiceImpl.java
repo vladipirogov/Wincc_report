@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.wincc.report.model.Report;
 import org.wincc.report.repository.ReportRepository;
 import org.wincc.report.repository.SettingRepository;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import javax.persistence.EntityManager;
@@ -25,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +46,8 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private EntityManager entityManager;
 
+    private Disposable disp;
+
     private DataSource getDataSource() {
         EntityManagerFactoryInfo info = (EntityManagerFactoryInfo) entityManager.getEntityManagerFactory();
         return info.getDataSource();
@@ -51,10 +56,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Flux<Report> findInInterval() {
         int interval = settingRepository.getOne(1).getUpdateInterval();
-        return Flux.interval(Duration.ofSeconds(interval))
+        Flux<Report> flux = Flux.interval(Duration.ofSeconds(interval))
                 .onBackpressureDrop()
-                .map(this::generateReports)
+                .map(x -> this.generateReports(interval))
                 .flatMapIterable(x -> x);
+        disp = flux.subscribe();
+        return flux;
     }
 
     @Override
@@ -69,7 +76,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private List<Report> generateReports(long interval) {
-        return reportRepository.findAll();
+        LocalDateTime dateStart = LocalDateTime.now().minusSeconds(interval).truncatedTo(ChronoUnit.SECONDS);
+        LocalDateTime dateEnd = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        return reportRepository.getByPeriodReport(dateStart, dateEnd);
     }
 
     @Override

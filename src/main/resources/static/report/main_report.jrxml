@@ -31,7 +31,7 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="Dataset1" uuid="d388dac4-3064-443e-8615-1516ff90be67">
+	<subDataset name="table_dataset" uuid="d388dac4-3064-443e-8615-1516ff90be67">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ABZ"/>
 		<parameter name="date_time" class="java.lang.String"/>
@@ -151,7 +151,7 @@ group by n_seria, r_name, temper]]>
 	SUM(weight) as sum_weight
 from
 	report
-where CAST(date_time AS DATE) <= convert(date,'2019-04-13')
+where CAST(date_time AS DATE) = convert(date,$P{input_date_time})
 		and r_name <> ''
 group by n_seria, r_name, temper]]>
 	</queryString>
@@ -249,7 +249,7 @@ group by n_seria, r_name, temper]]>
 					<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="878030bf-1706-496b-b422-129f09706660">
+					<datasetRun subDataset="table_dataset" uuid="66188bd4-0f23-4d05-af6d-59932ef19f54">
 						<datasetParameter name="date_time">
 							<datasetParameterExpression><![CDATA[$P{input_date_time}]]></datasetParameterExpression>
 						</datasetParameter>

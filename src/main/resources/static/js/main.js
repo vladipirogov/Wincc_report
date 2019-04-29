@@ -23,7 +23,7 @@ function loadreports () {
             });
         });
 
-        this.source.onerror = function () {
+        this.source.onerror = function() {
             this.close();
         };
 
@@ -57,15 +57,15 @@ function rowDto(report) {
    return result;
 }
 
-report = new loadreports();
+var flux = new loadreports();
 
 /*
  * Register callbacks for starting and stopping the SSE controller.
  */
 window.onload = function() {
-    report.start();
+    flux.start();
 };
 window.onbeforeunload = function() {
-    report.stop();
+    flux.stop();
     return '';
 }
