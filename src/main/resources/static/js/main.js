@@ -62,9 +62,9 @@ var flux = new loadreports();
 /*
  * Register callbacks for starting and stopping the SSE controller.
  */
-window.onload = function() {
-    flux.start();
-};
+// window.onload = function() {
+//     flux.start();
+// };
 window.onbeforeunload = function() {
     flux.stop();
     return '';

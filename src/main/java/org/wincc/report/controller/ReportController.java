@@ -12,7 +12,6 @@ import org.wincc.report.service.ReportService;
 import reactor.core.publisher.Flux;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -29,9 +28,7 @@ public class ReportController {
     @PostMapping(path = "/report/main", produces="application/pdf;charset=UTF-8")
     public void report(HttpServletResponse response, @ModelAttribute(value="model") MainReportDto model) {
         response.setContentType("text/html");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("input_date_time", model.getDateInput());
-        parameters.put("input_batch", model.getBatchInput());
+        Map<String, Object> parameters = reportService.repParameters(model);
         reportService.generateReport(response, parameters, model.getReport(), model.isPrint());
     }
 }

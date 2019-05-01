@@ -43,12 +43,31 @@
                 <input type="text" id="batch_input" th:field="*{batchInput}" placeholder="Введите партию">
             </div>
         </div>
+
         <div class="row">
             <div class="col-25">
-                <label for="date_input">Дата:</label>
+                <label for="check_format">За период:</label>
+            </div>
+            <div class="col-25" style="padding-top:13px">
+                <input type="checkbox" id="check_end_date" th:field="*{endDate}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="date_input">Дата с:</label>
             </div>
             <div class="col-25">
                 <input type="text" id="date_input" th:field="*{dateInput}" placeholder="Введите дату">
+            </div>
+        </div>
+
+        <div id="end_date_row" class="row" style="display: none">
+            <div class="col-25">
+                <label for="date_input">Дата по:</label>
+            </div>
+            <div class="col-25">
+                <input type="text" id="end_date_input" th:field="*{endDateInput}" placeholder="Введите дату">
             </div>
         </div>
 
@@ -73,10 +92,29 @@
 </script>
 <script>
     $( function() {
+
+        var months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+        var days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+
         $( "#date_input" ).datepicker({
             dateFormat: 'yy-mm-dd',
-            monthNames : ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-            dayNamesMin : ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            monthNames : months,
+            dayNamesMin : days,
+        });
+
+        $( "#end_date_input" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            monthNames : months,
+            dayNamesMin : days,
+        });
+
+        $('#check_end_date').change(function() {
+            if(this.checked) {
+                $('#end_date_row').attr('style','display: block');
+            }
+            else {
+                $('#end_date_row').attr('style','display: none');
+            }
         });
     } );
 </script>

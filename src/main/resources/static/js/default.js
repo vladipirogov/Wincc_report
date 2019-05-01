@@ -32,7 +32,6 @@ function w3_select(element) {
 }
 
 send = (url, value, method) => {
-    console.log(value);
     var payload = { method: method,
         mode: 'cors',
         cache: 'default',

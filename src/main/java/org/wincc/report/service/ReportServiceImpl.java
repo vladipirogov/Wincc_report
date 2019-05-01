@@ -11,10 +11,10 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.stereotype.Service;
+import org.wincc.report.model.MainReportDto;
 import org.wincc.report.model.Report;
 import org.wincc.report.repository.ReportRepository;
 import org.wincc.report.repository.SettingRepository;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import javax.persistence.EntityManager;
@@ -28,10 +28,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -46,8 +43,6 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private EntityManager entityManager;
 
-    private Disposable disp;
-
     private DataSource getDataSource() {
         EntityManagerFactoryInfo info = (EntityManagerFactoryInfo) entityManager.getEntityManagerFactory();
         return info.getDataSource();
@@ -60,7 +55,6 @@ public class ReportServiceImpl implements ReportService {
                 .onBackpressureDrop()
                 .map(x -> this.generateReports(interval))
                 .flatMapIterable(x -> x);
-        disp = flux.subscribe();
         return flux;
     }
 
@@ -79,6 +73,15 @@ public class ReportServiceImpl implements ReportService {
         LocalDateTime dateStart = LocalDateTime.now().minusSeconds(interval).truncatedTo(ChronoUnit.SECONDS);
         LocalDateTime dateEnd = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         return reportRepository.getByPeriodReport(dateStart, dateEnd);
+    }
+
+    @Override
+    public Map<String, Object> repParameters(MainReportDto model) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("input_date_time", model.getDateInput());
+        parameters.put("input_end_date_time", model.isEndDate() ? model.getEndDateInput() : model.getDateInput());
+        parameters.put("input_batch", model.getBatchInput());
+        return parameters;
     }
 
     @Override

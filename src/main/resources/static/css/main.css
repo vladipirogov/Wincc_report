@@ -3,6 +3,12 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     margin:40px 0;
 }
 
+.table-panel {
+    position: fixed;
+    width: 100%;
+    background-color: #F1F1F1;
+}
+
 .page-content {
     margin-right: 10px;
     margin-left:210px;
@@ -15,6 +21,7 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 .report-table {
     overflow-x:auto;
+    padding-top: 50px;
 }
 
 .report-table table {
@@ -23,6 +30,7 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     font-size: 12px;
     text-align:center;
     white-space: nowrap;
+    width: 100%;
 }
 
 .report-table table th, td {
@@ -51,7 +59,7 @@ label {
     display: inline-block;
 }
 
-input[type=submit] {
+.row input[type=submit] {
     background-color: #4CAF50;
     color: white;
     padding: 12px 20px;

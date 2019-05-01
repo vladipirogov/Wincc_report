@@ -1,5 +1,6 @@
 package org.wincc.report.service;
 
+import org.wincc.report.model.MainReportDto;
 import org.wincc.report.model.Report;
 import reactor.core.publisher.Flux;
 
@@ -10,7 +11,9 @@ import java.util.Map;
 public interface ReportService {
     Flux<Report> findInInterval();
 
-    public List<Map<String, Object>> report();
+    List<Map<String, Object>> report();
+
+    Map<String, Object> repParameters(MainReportDto model);
 
     void generateReport(HttpServletResponse response, Map<String, Object> parameters, String report, boolean print);
 }

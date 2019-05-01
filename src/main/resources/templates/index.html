@@ -14,30 +14,38 @@
 <div th:insert="~{default :: #mySidebar}"></div>
 
 <div class="w3-main page-content">
-        <div class="tittle">
-            <h1>Основной обзор</h1>
+        <div class="table-panel">
+            <form action="#" th:action="@{/period}" th:object="${model}" method="post" style="display: contents;">
+                <label>Дата с: <input id="report-date-input" type="text" style="height: 15px; width: 150px" th:field="*{dateInput}"></label>
+                <label>Дата по: <input id="report-end-date-input" type="text" style="height: 15px; width: 150px" th:field="*{endDateInput}"></label>
+                <input type="submit" value="Выполнить" onclick="showMessageBox('Выборка за период')" style="margin-right:50px">
+            </form>
+            <form id="start-form" action="#" th:action="@{/}" th:object="${model}" method="post" style="display: contents;">
+                <input type="submit" value="Авто-старт" onclick="showMessageBox('Авто-старт');">
+            </form>
+            <button id="auto-stop-btn" onclick="flux.stop(); showMessageBox('Авто-стoп')" style="margin-left: 50px">Авто-стоп</button>
         </div>
 
         <div class="report-table">
         <table id="reports_table" class="table-striped" style="overflow-x:auto;">
             <thead>
             <tr>
-                <th width="5%">Время</th>
-                <th width="5%">Обозначение</th>
-                <th width="5%">Рецепт</th>
-                <th width="5%">Щебень 0-5</th>
-                <th width="5%">Щебень 5-10</th>
-                <th width="5%">Щебень 10-20</th>
-                <th width="5%">Щебень 20-40</th>
-                <th width="5%">Целлюлоза</th>
-                <th width="5%">Мин доб</th>
-                <th width="5%">Пыль</th>
-                <th width="5%">Битум</th>
-                <th width="5%">Температура</th>
-                <th width="5%">Перемеш, сек</th>
-                <th width="5%">Вес, кг</th>
-                <th width="5%">Вес всего, кг</th>
-                <th width="5%">Оператор</th>
+                <th>Время</th>
+                <th>Обозначение</th>
+                <th>Рецепт</th>
+                <th>Щебень 0-5</th>
+                <th>Щебень 5-10</th>
+                <th>Щебень 10-20</th>
+                <th>Щебень 20-40</th>
+                <th>Целлюлоза</th>
+                <th>Мин доб</th>
+                <th>Пыль</th>
+                <th>Битум</th>
+                <th>Температура</th>
+                <th>Перемеш, сек</th>
+                <th>Вес, кг</th>
+                <th>Вес всего, кг</th>
+                <th>Оператор</th>
             </tr>
             </thead>
             <tbody id="reports-body">
@@ -63,13 +71,43 @@
         </table>
         </div>
 
+    </div>
 </div>
 
 <div th:insert="~{default :: #snackbar}"></div>
 
-<script data-th-src="@{/js/main.js}"></script>
 <script>
     w3_select(document.getElementById('index_href'))
+</script>
+
+<script>
+    var months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+    var days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+
+    $( "#report-date-input" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+        monthNames : months,
+        dayNamesMin : days,
+    });
+
+    $( "#report-end-date-input" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+        monthNames : months,
+        dayNamesMin : days,
+    });
+
+    $('#start-form').submit(function(){
+        $.ajax({
+            url: $('#start-form').attr('action'),
+            type: 'POST',
+            data : $('#start-form').serialize(),
+            success: function(){
+                $('#reports_table tbody').empty();
+                flux.start();
+            }
+        });
+        return false;
+    });
 </script>
 
 </body>

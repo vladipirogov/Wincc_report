@@ -1,24 +1,28 @@
 package org.wincc.report.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.wincc.report.model.MainReportDto;
 import org.wincc.report.model.Report;
 import org.wincc.report.model.Setting;
 import org.wincc.report.repository.ReportRepository;
 import org.wincc.report.repository.SettingRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class MainController {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Autowired
     private ReportRepository reportRepository;
@@ -26,7 +30,7 @@ public class MainController {
     @Autowired
     private SettingRepository settingRepository;
 
-    @GetMapping("/")
+    @RequestMapping(value = "/", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(Model model) {
         LocalDateTime dateStart = LocalDateTime.now()
                 .withHour(0)
@@ -36,6 +40,7 @@ public class MainController {
         LocalDateTime dateEnd = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         List<Report> reportList = reportRepository.getByPeriodReport(dateStart, dateEnd);
         model.addAttribute("reports", reportList);
+        model.addAttribute("model", new MainReportDto());
         return "index";
     }
 
@@ -63,5 +68,19 @@ public class MainController {
         setting.setUpdateInterval(input.getUpdateInterval());
         model.addAttribute("setting", setting);
         settingRepository.save(setting);
+    }
+
+    @PostMapping(path = "/period")
+    public String reportByPeriod(@ModelAttribute(value="model") MainReportDto reportDto, Model model) {
+        try {
+            LocalDateTime dateStart = LocalDate.parse(reportDto.getDateInput(), formatter).atStartOfDay();
+            LocalDateTime dateEnd = LocalDate.parse(reportDto.getEndDateInput(), formatter).atStartOfDay();
+            List<Report> reportList = reportRepository.getByPeriodReport(dateStart, dateEnd);
+            model.addAttribute("reports", reportList);
+        }
+        catch (DateTimeParseException ex) {
+            log.error(ex.getMessage());
+        }
+        return "index";
     }
 }

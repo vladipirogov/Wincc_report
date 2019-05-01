@@ -14,10 +14,11 @@
     <link rel="stylesheet"  href="/css/jquery-ui.css">
     <link data-th-href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link data-th-href="@{/css/main.css}" rel="stylesheet">
-    <script data-th-src="@{/js/default.js}"></script>
     <script data-th-src="@{/js/jquery-3.4.0.min.js}"></script>
+    <script data-th-src="@{/js/default.js}"></script>
     <script data-th-src="@{/js/jquery-ui.js}"></script>
     <script data-th-src="@{/js/pagination.min.js}"></script>
+    <script data-th-src="@{/js/main.js}"></script>
 </head>
 
 <body class="w3-light-grey">
@@ -47,7 +48,6 @@
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
         <a id = "index_href"   th:href="@{/}"        class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Обзор </a>
         <a id = "reports_href" th:href="@{/reports}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Отчеты </a>
-        <a id = "history_href" th:href="@{/history}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> История </a>
         <a id = "setting_href" th:href="@{/setting}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i> Настройки </a><br><br>
     </div>
 </nav>
