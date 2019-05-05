@@ -6,33 +6,24 @@
 
 <head>
     <div th:insert="~{default :: head}"></div>
+    <script data-th-src="@{/js/main.js}"></script>
 </head>
 
 <body class="w3-light-grey">
 
-<div th:insert="~{default :: top_container}"></div>
 <div th:insert="~{default :: #mySidebar}"></div>
 
 <div class="w3-main page-content">
-        <div class="table-panel">
-            <form action="#" th:action="@{/period}" th:object="${model}" method="post" style="display: contents;">
-                <label>Дата с: <input id="report-date-input" type="text" style="height: 15px; width: 150px" th:field="*{dateInput}"></label>
-                <label>Дата по: <input id="report-end-date-input" type="text" style="height: 15px; width: 150px" th:field="*{endDateInput}"></label>
-                <input type="submit" value="Выполнить" onclick="showMessageBox('Выборка за период')" style="margin-right:50px">
-            </form>
-            <form id="start-form" action="#" th:action="@{/}" th:object="${model}" method="post" style="display: contents;">
-                <input type="submit" value="Авто-старт" onclick="showMessageBox('Авто-старт');">
-            </form>
-            <button id="auto-stop-btn" onclick="flux.stop(); showMessageBox('Авто-стoп')" style="margin-left: 50px">Авто-стоп</button>
-        </div>
+
 
         <div class="report-table">
         <table id="reports_table" class="table-striped" style="overflow-x:auto;">
             <thead>
             <tr>
                 <th>Время</th>
-                <th>Обозначение</th>
-                <th>Рецепт</th>
+                <th>Вып.</th>
+                <th>Код рецепта</th>
+                <th>Тип АБС</th>
                 <th>Щебень 0-5</th>
                 <th>Щебень 5-10</th>
                 <th>Щебень 10-20</th>
@@ -51,6 +42,7 @@
             <tbody id="reports-body">
             <tr class="result" data-th-each="report : ${reports}">
                 <td>[[${report.dateTime}]]</td>
+                <td>[[${report.num}]]</td>
                 <td>[[${report.code}]]</td>
                 <td>[[${report.rName}]]</td>
                 <td>[[${report.rub05}]]</td>
@@ -77,6 +69,10 @@
 <div th:insert="~{default :: #snackbar}"></div>
 
 <script>
+    $('#table-panel').show();
+</script>
+
+<script>
     w3_select(document.getElementById('index_href'))
 </script>
 
@@ -90,11 +86,6 @@
         dayNamesMin : days,
     });
 
-    $( "#report-end-date-input" ).datepicker({
-        dateFormat: 'yy-mm-dd',
-        monthNames : months,
-        dayNamesMin : days,
-    });
 
     $('#start-form').submit(function(){
         $.ajax({

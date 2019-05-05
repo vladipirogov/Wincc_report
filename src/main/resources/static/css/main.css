@@ -3,6 +3,16 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     margin:40px 0;
 }
 
+fieldset {
+    border: 1px solid #c0c0c0;
+    padding: .35em .625em .75em;
+    width: 170px;
+}
+
+legend {
+    font-size: inherit;
+}
+
 .table-panel {
     position: fixed;
     width: 100%;
@@ -12,7 +22,6 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 .page-content {
     margin-right: 10px;
     margin-left:210px;
-    margin-top:43px;
 }
 
 .header {
@@ -21,7 +30,6 @@ html,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 .report-table {
     overflow-x:auto;
-    padding-top: 50px;
 }
 
 .report-table table {

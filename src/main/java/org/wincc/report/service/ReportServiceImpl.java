@@ -12,11 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.stereotype.Service;
 import org.wincc.report.model.MainReportDto;
-import org.wincc.report.model.Report;
-import org.wincc.report.repository.ReportRepository;
-import org.wincc.report.repository.SettingRepository;
-import reactor.core.publisher.Flux;
-
 import javax.persistence.EntityManager;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -25,20 +20,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 @Slf4j
 public class ReportServiceImpl implements ReportService {
-
-    @Autowired
-    private ReportRepository reportRepository;
-
-    @Autowired
-    private SettingRepository settingRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -49,38 +36,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Flux<Report> findInInterval() {
-        int interval = settingRepository.getOne(1).getUpdateInterval();
-        Flux<Report> flux = Flux.interval(Duration.ofSeconds(interval))
-                .onBackpressureDrop()
-                .map(x -> this.generateReports(interval))
-                .flatMapIterable(x -> x);
-        return flux;
-    }
-
-    @Override
-    public List<Map<String, Object>> report() {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        for (Report report : reportRepository.findAll()) {
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("date_time", report.getDateTime());
-            result.add(item);
-        }
-        return result;
-    }
-
-    private List<Report> generateReports(long interval) {
-        LocalDateTime dateStart = LocalDateTime.now().minusSeconds(interval).truncatedTo(ChronoUnit.SECONDS);
-        LocalDateTime dateEnd = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        return reportRepository.getByPeriodReport(dateStart, dateEnd);
-    }
-
-    @Override
     public Map<String, Object> repParameters(MainReportDto model) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("input_date_time", model.getDateInput());
         parameters.put("input_end_date_time", model.isEndDate() ? model.getEndDateInput() : model.getDateInput());
-        parameters.put("input_batch", model.getBatchInput());
+        parameters.put("input_batch", "");
         return parameters;
     }
 
