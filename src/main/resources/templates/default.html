@@ -17,8 +17,8 @@
     <script data-th-src="@{/js/jquery-3.4.0.min.js}"></script>
     <script data-th-src="@{/js/default.js}"></script>
     <script data-th-src="@{/js/jquery-ui.js}"></script>
-    <script data-th-src="@{/js/pagination.min.js}"></script>
-    <script data-th-src="@{/js/main.js}"></script>
+    <script data-th-src="@{/js/jQuery.date.min.js}"></script>
+    <script data-th-src="@{/js/moment.js}"></script>
 </head>
 
 <body class="w3-light-grey">
@@ -49,6 +49,28 @@
         <a id = "index_href"   th:href="@{/}"        class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> Обзор </a>
         <a id = "reports_href" th:href="@{/reports}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> Отчеты </a>
         <a id = "setting_href" th:href="@{/setting}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i> Настройки </a><br><br>
+    </div>
+
+    <div id = "table-panel" style="margin-left:15px; display:none;">
+        <fieldset>
+            <legend>Выборка:</legend>
+                <div style="margin-bottom: 10px">
+                    <label for="report-date-input" style="padding:0">Дата: </label>
+                    <input id="report-date-input" type="text" style="height: 15px; width: 150px" name="dateInput" autocomplete="off">
+                </div>
+                <div>
+                    <button style="width: 100px" id="period-btn" onclick="showMessageBox('Выборка'); findByPeriod()">Выборка</button>
+                </div>
+        </fieldset>
+        <fieldset style="margin-top:20px;">
+            <legend>Обновление:</legend>
+            <div style="margin-top: 10px;">
+                <button id="auto-start-btn" style="width: 100px" onclick="showMessageBox('Авто-старт');updates.findUpdates()">Авто-старт</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <button id="auto-stop-btn" style="width: 100px" onclick="updates.stopUpdates(); showMessageBox('Авто-стoп')">Авто-стоп</button>
+            </div>
+        </fieldset>
     </div>
 </nav>
 

@@ -9,7 +9,6 @@
 
 <body w3-light-grey>
 
-<div th:insert="~{default :: top_container}"></div>
 <div th:insert="~{default :: #mySidebar}"></div>
 
 <div class="w3-main page-content">
@@ -20,7 +19,7 @@
 </div>
 
 <div class="container">
-    <form action="#" th:action="@{/report/main}" th:object="${model}" method="post">
+    <form action="#" th:action="@{/report/main}" th:object="${model}" method="post"  autocomplete="off">
 
         <div class="row">
             <div class="col-25">
@@ -29,18 +28,7 @@
             <div class="col-30">
                 <select id="report_select" th:field="*{report}">
                     <option value="main_report">Отчет производства</option>
-                    <option value="second_report">Второй отчет</option>
-                    <option value="third_report">Третий отчет</option>
                 </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-25">
-                <label for="batch_input">Партия:</label>
-            </div>
-            <div class="col-25">
-                <input type="text" id="batch_input" th:field="*{batchInput}" placeholder="Введите партию">
             </div>
         </div>
 
