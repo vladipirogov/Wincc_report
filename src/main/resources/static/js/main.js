@@ -91,6 +91,7 @@ function autoUpdate () {
             return;
         }
 
+        $("#auto-start-btn").addClass( "color-start" );
         $("#reports-body").empty();
 
         request('/setting', '', 'POST', function (data) {
@@ -101,6 +102,7 @@ function autoUpdate () {
     }
 
     this.stopUpdates = () => {
+        $("#auto-start-btn").removeClass( "color-start" );
         clearInterval(timer);
         timer = null;
     }
