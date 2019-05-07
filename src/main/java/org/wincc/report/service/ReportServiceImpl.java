@@ -27,6 +27,9 @@ import java.util.HashMap;
 @Slf4j
 public class ReportServiceImpl implements ReportService {
 
+    private static final String REP_FOLDER = "/static/report/";
+    private static final String REP_EXT = ".jrxml";
+
     @Autowired
     private EntityManager entityManager;
 
@@ -49,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
                                Map<String, Object> parameters,
                                String report,
                                boolean print) {
-        try(InputStream inputStream = this.getClass().getResourceAsStream("/static/report/main_report.jrxml");
+        try(InputStream inputStream = this.getClass().getResourceAsStream(REP_FOLDER + report + REP_EXT);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ServletOutputStream servletOutputStream = response.getOutputStream()) {
             JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
