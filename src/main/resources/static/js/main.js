@@ -1,14 +1,14 @@
+var mainTable = null;
+
 
 fillTable = (data) => {
     var rowObject = rowDto(data);
-    var reportTable = document.getElementById("reports_table");
-    var row = reportTable.getElementsByTagName("tbody")[0].insertRow(-1);
+    var result = [];
 
     Object.keys(rowObject).forEach(function(key, index) {
-        var cell = row.insertCell(index);
-        cell.style.width = '5.88%';
-        cell.innerHTML = rowObject[key];
+        result.push(rowObject[key]);
     });
+    return result;
 }
 
 function rowDto(report) {
@@ -48,39 +48,45 @@ request = (url, value, method, fun) => {
         .then(data => {
            fun(data);
         })
-        .catch(error => console.error(error))
+        .catch(error => console.log(error))
 }
 
 function autoUpdate () {
     var timer = null;
     var timeout = 1;
+    var tableDataSet = null;
+
+    dataSet : tableDataSet;
 
     fillRows = (data) => {
         data.forEach(function (element) {
-            fillTable(element) // Prints result from `response.json()`
+            tableDataSet.push(fillTable(element)) // Prints result from `response.json()`
         })
+        mainTable.rows.add(tableDataSet).draw();
     }
 
     callbackTime = () => {
+        tableDataSet = [];
+        $('#reports_table').dataTable().fnFilter('');
+        $('#reports_table').dataTable().fnSort([ 0, "desc" ]);
         var table = document.getElementById("reports_table");
         var rows = table.getElementsByTagName("tbody")[0].rows;
-        var cells = rows[rows.length-1] != null ? rows[rows.length-1].cells : null;
+        var cells = rows[0] != null ? rows[0].cells : null;
         var dateInput = null;
-        if(cells != null) {
-            var cellValue = $.date(cells[0].innerHTML.replace(/&nbsp;/gi, ''),'format', 'Y-m-d H:i:s');
-            var date = new Date(moment(cellValue, "YYYY.MM.DDHH:mm:ss"));
-            date.setSeconds(date.getSeconds() + 1)
-            dateInput = $.date(date, 'format', 'Y-m-d H:i:s')
+        if(cells != null && cells[0].innerHTML != 'В таблице отсутствуют данные') {
+            var cellValue = cells[0].innerHTML.replace('&nbsp;', '').replace('&nbsp;', ' ');
+            dateInput = moment(cellValue, 'YYYY-MM-DD HH:mm:ss').add(1, 'seconds').utc(-120).format();
         }
         else {
-            dateInput = $.date(new Date().setHours(0, 0, 0, 0), 'format', 'Y-m-d H:i:s');
+            var nextDate = new Date();
+            nextDate.setHours(0, 0, 0, 0);
+            dateInput = moment(nextDate, 'YYYY-MM-DD HH:mm:ss').utc(-120).format();
         }
 
         var currentDate = new Date();
         currentDate.setHours(0,0,0,0);
-        var endDateInput = $.date(currentDate.setDate(currentDate.getDate() + 1), 'format', 'Y-m-d H:i:s');
+        var endDateInput = moment(currentDate, 'YYYY-MM-DD HH:mm:ss').add(1, 'days').utc(-120).format();
         var value = {dateInput : dateInput, endDateInput:endDateInput};
-        //console.log("value = " + value);
 
         request('/find_updates', value, 'POST', fillRows)
     }
@@ -92,7 +98,10 @@ function autoUpdate () {
         }
 
         $("#auto-start-btn").addClass( "color-start" );
-        $("#reports-body").empty();
+        if(mainTable != null) {
+                mainTable.clear();
+                mainTable.draw();
+            }
 
         request('/setting', '', 'POST', function (data) {
             timeout = data.updateInterval;
@@ -106,20 +115,51 @@ function autoUpdate () {
         clearInterval(timer);
         timer = null;
     }
+
+    this.findByPeriod = () => {
+        if(updates != null)
+            this.stopUpdates();
+        mainTable.clear();
+        mainTable.draw();
+        tableDataSet = [];
+        var input = document.getElementById('report-date-input').value
+        var dateInput = moment(input, 'YYYY-MM-DD HH:mm:ss').utc(-120).format();
+        var endDateInput = moment(input, 'YYYY-MM-DD HH:mm:ss').add(1, 'days').utc(-120).format();
+        var value = {dateInput : dateInput, endDateInput:endDateInput};
+        request('/find_updates', value, 'POST', fillRows)
+    }
 }
 
-
-findByPeriod = () => {
-    if(updates != null)
-        updates.stopUpdates();
-    $("#reports-body").empty();
-    var input = document.getElementById('report-date-input').value
-    var date = new Date(input);
-    var dateInput = $.date(input, 'format', 'Y-m-d H:i:s');
-    var endDateInput = $.date(date.setDate(date.getDate() + 1), 'format', 'Y-m-d H:i:s');
-    var value = {dateInput : dateInput, endDateInput:endDateInput};
-    request('/find_updates', value, 'POST', fillRows)
-}
 
 var updates = new autoUpdate();
 updates.findUpdates();
+
+$(document).ready(function() {
+  mainTable = $('#reports_table').DataTable({
+         "pageLength": 25,
+         "order": [[ 0, "desc" ]],
+         language: {
+                 processing:     "Подождите...",
+                 search:         "Поиск:",
+                 lengthMenu:    "Показать _MENU_ записей",
+                 info:           "Записи с _START_ до _END_ из _TOTAL_ записей",
+                 infoEmpty:      "Записи с 0 до 0 из 0 записей",
+                 infoFiltered:   "(отфильтровано из _MAX_ записей)",
+                 infoPostFix:    "",
+                 loadingRecords: "Загрузка записей...",
+                 zeroRecords:    "Записи отсутствуют.",
+                 emptyTable:     "В таблице отсутствуют данные",
+                 paginate: {
+                     first:      "Первая",
+                     previous:   "Предыдущая",
+                     next:       "Следующая",
+                     last:       "Последняя"
+                 },
+                 aria: {
+                     sortAscending:  ": активировать для сортировки столбца по возрастанию",
+                     sortDescending: ": активировать для сортировки столбца по убыванию"
+                 }
+             }
+    });
+    $("#reports_table").removeClass( "dataTable" );
+} );

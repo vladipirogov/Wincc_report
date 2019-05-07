@@ -14,11 +14,14 @@
     <link rel="stylesheet"  href="/css/jquery-ui.css">
     <link data-th-href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link data-th-href="@{/css/main.css}" rel="stylesheet">
+    <link data-th-href="@{/css/datatables.min.css}" rel="stylesheet">
     <script data-th-src="@{/js/jquery-3.4.0.min.js}"></script>
     <script data-th-src="@{/js/default.js}"></script>
     <script data-th-src="@{/js/jquery-ui.js}"></script>
     <script data-th-src="@{/js/jQuery.date.min.js}"></script>
     <script data-th-src="@{/js/moment.js}"></script>
+    <script data-th-src="@{/js/bootstrap.min.js}"></script>
+    <script data-th-src="@{/js/datatables.min.js}"></script>
 </head>
 
 <body class="w3-light-grey">
@@ -59,7 +62,7 @@
                     <input id="report-date-input" type="text" style="height: 15px; width: 150px" name="dateInput" autocomplete="off" placeholder="Введите дату">
                 </div>
                 <div>
-                    <button style="width: 100px" id="period-btn" onclick="showMessageBox('Выборка'); findByPeriod()">Выборка</button>
+                    <button style="width: 100px" id="period-btn" onclick="showMessageBox('Выборка'); updates.findByPeriod()">Выборка</button>
                 </div>
         </fieldset>
         <fieldset style="margin-top:20px;">
