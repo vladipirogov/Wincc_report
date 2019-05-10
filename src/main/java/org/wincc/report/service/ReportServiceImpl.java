@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,6 +60,7 @@ public class ReportServiceImpl implements ReportService {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, getDataSource().getConnection());
             response.setContentType("application/pdf");
             response.setCharacterEncoding("UTF-8");
+            response.addHeader("Content-disposition", "filename=" + report + "_" + LocalDate.now().toString() + ".pdf");
             JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
             response.setContentLength(baos.size());
             baos.writeTo(servletOutputStream);
