@@ -73,7 +73,7 @@ order by date_start]]>
 	MIN(convert(date, date_time)) as date_start,
 	CAST(SUM(counter_1) as float)/1000 as sum_counter
 from energo
-where date_time  BETWEEN convert(date,$P{input_date_time}) AND convert(date,$P{input_end_date_time})
+where CAST(date_time AS DATE)  BETWEEN convert(date,$P{input_date_time}) AND convert(date,$P{input_end_date_time})
 group by convert(date, date_time)
 order by date_start]]>
 	</queryString>
