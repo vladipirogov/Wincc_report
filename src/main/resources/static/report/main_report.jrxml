@@ -79,7 +79,7 @@
 			<![CDATA[select
 	MIN(date_time) date_from,
 	MAX(date_time) date_to,
-	r_name, 
+	MAX(r_name) as r_name, 
 	MAX(num) as num,
 	MAX(code) as code,
 	CAST(SUM(rub_0_5) as float)/1000 as sum_rub_0_5, 
@@ -90,13 +90,13 @@
 	CAST(SUM(mineral) as float)/1000 as sum_mineral, 
 	CAST(SUM(dust) as float)/1000 as sum_dust, 
 	CAST(SUM(bitum) as float)/1000 as sum_bitum, 
-	temper, 
+	AVG(temper) as temper, 
 	CAST(SUM(weight) as float)/1000 as sum_weight
 from
 	report
 where CAST(date_time AS DATE) BETWEEN convert(date,$P{date_time}) AND convert(date,$P{end_date_time})
 		and code > 0 and bitum <> 0
-group by n_seria, r_name, temper
+group by n_seria
 order by date_from]]>
 		</queryString>
 		<field name="date_from" class="java.sql.Timestamp">
@@ -208,7 +208,7 @@ order by date_from]]>
 		<![CDATA[select
 	MIN(date_time) date_from,
 	MAX(date_time) date_to,
-	r_name, 
+	MAX(r_name) as r_name, 
 	MAX(num) as num,
 	MAX(code) as code,
 	SUM(rub_0_5) as sum_rub_0_5, 
@@ -219,13 +219,13 @@ order by date_from]]>
 	SUM(mineral) as sum_mineral, 
 	SUM(dust) as sum_dust, 
 	SUM(bitum) as sum_bitum, 
-	temper , 
+	AVG(temper) as temper, 
 	SUM(weight) as sum_weight
 from
 	report
 where CAST(date_time AS DATE) BETWEEN convert(date,$P{input_date_time}) AND convert(date,$P{input_end_date_time})
 		and r_name <> '' and bitum <> 0
-group by n_seria, r_name, temper
+group by n_seria
 order by date_from]]>
 	</queryString>
 	<field name="date_from" class="java.sql.Timestamp">
