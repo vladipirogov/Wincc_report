@@ -187,7 +187,7 @@ order by date_start]]>
 							<staticText>
 								<reportElement x="0" y="0" width="100" height="30" uuid="7320e2d5-ef1e-4330-8cc6-84a50b8edfee"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Расход ДТ,т]]></text>
+								<text><![CDATA[Расход ДТ,л/1000]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="15">

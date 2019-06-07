@@ -322,11 +322,11 @@ order by date_from]]>
 				<text><![CDATA[Дата по:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="650" y="0" width="80" height="23" uuid="7ad3b37a-442c-48fb-92bc-1ae4c5f35067"/>
+				<reportElement x="620" y="0" width="110" height="23" uuid="7ad3b37a-442c-48fb-92bc-1ae4c5f35067"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Расход ДТ, т:]]></text>
+				<text><![CDATA[Расход ДТ, л/1000:]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement x="740" y="0" width="80" height="23" uuid="58436e56-dad4-4c9f-b0d8-78e71b56530d">
